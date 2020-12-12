@@ -1,0 +1,60 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: docker-registry
+  namespace: treasure-hunt
+  labels:
+    app: docker-registry
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: docker-registry
+  template:
+    metadata:
+      labels:
+        app: docker-registry
+    spec:
+      containers:
+        - name: docker-registry
+          image: registry:2.7
+          volumeMounts:
+          - mountPath: "/var/lib/registry"
+            name: registry
+          - mountPath: "/auth/"
+            name: docker-registry-secret
+          - name: registry-config
+            mountPath: /etc/docker/registry/
+          ports:
+          - containerPort: 5000
+          env:
+          - name: REGISTRY_AUTH
+            value: htpasswd
+          - name: REGISTRY_AUTH_HTPASSWD_REALM
+            value: "Registry Realm"
+          - name: REGISTRY_AUTH_HTPASSWD_PATH
+            value: "/auth/docker-registry-htpasswd"
+          - name: REGISTRY_HTTP_TLS_CERTIFICATE
+            value: "/auth/ca.crt"
+          - name: REGISTRY_HTTP_TLS_KEY
+            value: "/auth/ca.key"
+          - name: REGISTRY_HTTP_ADDR
+            value: 0.0.0.0:5000
+      volumes:
+        - name: registry-config
+          configMap:
+            name: registry-config
+        - name: registry
+          hostPath:
+            path: /data/registry
+            type: DirectoryOrCreate
+        - name: docker-registry-secret
+          secret:
+            secretName: docker-registry-secret
+            items:
+            - key: REGISTRY_AUTH_HTPASSWD
+              path: "docker-registry-htpasswd"
+            - key: REGISTRY_HTTP_TLS_CERTIFICATE
+              path: "ca.crt"
+            - key: REGISTRY_HTTP_TLS_KEY
+              path: "ca.key"

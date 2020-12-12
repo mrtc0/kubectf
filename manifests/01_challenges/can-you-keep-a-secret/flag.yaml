@@ -1,0 +1,8 @@
+apiVersion: v1
+data:
+  flag: azhzY3Rmezk0ZDViY2RmNjFlMDRjNjNjNGU3ZGRkNTIzZDIyMzI1ZmNmMzNkZWZ9
+kind: Secret
+metadata:
+  creationTimestamp: null
+  name: flag
+  namespace: kube-system

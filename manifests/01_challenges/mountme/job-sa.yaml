@@ -1,0 +1,36 @@
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: runner
+  namespace: mountme
+automountServiceAccountToken: false
+
+---
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: job-runner
+  namespace: mountme
+rules:
+  - apiGroups: ["batch", "extensions"]
+    resources: ["jobs", "job/status"]
+    verbs: ["*"]
+  - apiGroups: [""]
+    resources: ["pods", "pods/binding", "pods/log", "pods/status"]
+    verbs: ["get", "list"]
+
+---
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: job-runner
+  namespace: mountme
+subjects:
+- kind: ServiceAccount
+  name: runner
+  namespace: mountme
+roleRef:
+  kind: Role
+  name: job-runner
+  apiGroup: rbac.authorization.k8s.io

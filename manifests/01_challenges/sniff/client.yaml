@@ -1,0 +1,19 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: client
+  namespace: sniff
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: client
+  template:
+    metadata:
+      labels:
+        app: client
+    spec:
+      containers:
+        - name: client
+          image: nicolaka/netshoot:latest
+          command: ["sh", "-c", "while true; do curl -X POST -d \"k8sctf{25cb1d440f87baf0cf09e8bd3d349df2204c4481}\" server.sniff.svc.cluster.local; sleep 5; done"]

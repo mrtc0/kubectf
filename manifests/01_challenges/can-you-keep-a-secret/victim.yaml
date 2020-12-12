@@ -1,0 +1,28 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: victim
+  namespace: can-you-keep-a-secret
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: victim
+  template:
+    metadata:
+      labels:
+        app: victim
+    spec:
+      hostNetwork: true
+      containers:
+        - name: victim
+          image: gcr.io/etcd-development/etcd
+          command: ["tail", "-f", "/dev/null"]
+          volumeMounts:
+          - name: etcd-credentials
+            mountPath: /mnt/etcd-credentials
+      volumes:
+        - name: etcd-credentials
+          secret:
+            secretName: etcd-credentials
+      

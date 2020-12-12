@@ -1,0 +1,21 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: victim
+  namespace: mountme
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: victim
+  template:
+    metadata:
+      labels:
+        app: victim
+    spec:
+      serviceAccountName: runner
+      automountServiceAccountToken: true
+      containers:
+        - name: victim
+          image: bitnami/kubectl:1.19.4
+          command: ["tail", "-f", "/dev/null"]

@@ -1,0 +1,25 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: victim
+  namespace: treasure-hunt
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: victim
+  template:
+    metadata:
+      labels:
+        app: victim
+    spec:
+      containers:
+        - name: victim
+          image: nicolaka/netshoot:latest
+          command: ["tail", "-f", "/dev/null"]
+          env:
+            - name: DOCKER_USERNAME
+              value: ctf
+            - name: DOCKER_PASSWORD
+              value: fj8ur3gy837nbt8g7r89yfbrwye89
+

@@ -1,0 +1,14 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: docker-registry
+  namespace: treasure-hunt
+spec:
+  selector:
+    app: docker-registry
+  type: ClusterIP
+  ports:
+  - protocol: TCP
+    port: 5000
+    targetPort: 5000
+    name: docker-registry-http

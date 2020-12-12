@@ -1,0 +1,8 @@
+manifests/01_challenges/can-you-keep-a-secret/*.crt
+manifests/01_challenges/can-you-keep-a-secret/*.key
+
+manifests/01_challenges/can-you-keep-a-secret/writeup
+manifests/01_challenges/mountme/writeup
+manifests/01_challenges/mountme2/writeup
+manifests/01_challenges/sniff/writeup
+manifests/01_challenges/treasure-hunt/writeup

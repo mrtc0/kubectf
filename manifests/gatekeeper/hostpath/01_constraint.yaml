@@ -1,0 +1,15 @@
+apiVersion: constraints.gatekeeper.sh/v1beta1
+kind: K8sPSPHostFilesystem
+metadata:
+  name: psp-host-filesystem
+spec:
+  match:
+    kinds:
+      - apiGroups: [""]
+        kinds: ["Pod"]
+  parameters:
+    allowedHostPaths:
+    - readOnly: true
+      pathPrefix: "/data"
+    - readOnly: true
+      pathPrefix: "/home/docker/mountme1"
